@@ -16,7 +16,7 @@
 def createNamespace (namespace) {
     echo "Creating namespace ${namespace} if needed"
 
-    sh "[ ! -z \"\$(/opt/homebrew/bin/kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || kubectl create ns ${namespace}"
+    sh "[ ! -z \"\$(/opt/homebrew/bin/kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || /opt/homebrew/bin/kubectl create ns ${namespace}"
 }
 
 /*
@@ -82,7 +82,7 @@ def curlTest (namespace, out) {
         // Get deployment's service IP
         def svc_ip = sh (
                 returnStdout: true,
-                script: "kubectl get svc -n ${namespace} | grep ${ID} | awk '{print \$3}'"
+                script: "/opt/homebrew/bin/kubectl get svc -n ${namespace} | grep ${ID} | awk '{print \$3}'"
         )
 
         if (svc_ip.equals('')) {
@@ -147,10 +147,10 @@ pipeline {
                 echo "Check out acme code"
                 git branch: "master",
                         credentialsId: 'eldada-bb',
-                        url: 'https://github.com/eldada/jenkins-pipeline-kubernetes.git'
+                        url: 'https://github.com/Olak29/jenkins-pipeline-kubernetes.git'
 
                 // Validate kubectl
-                sh "kubectl cluster-info"
+                sh "/opt/homebrew/bin/kubectl cluster-info"
 
                 // Init helm client
                 sh "helm init"
