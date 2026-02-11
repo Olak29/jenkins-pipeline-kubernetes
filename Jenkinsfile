@@ -153,7 +153,7 @@ pipeline {
                 sh "/opt/homebrew/bin/kubectl cluster-info"
 
                 // Init helm client
-                sh "/opt/homebrew/bin/helm init"
+                // sh "/opt/homebrew/bin/helm init"
 
                 // Make sure parameters file exists
                 script {
