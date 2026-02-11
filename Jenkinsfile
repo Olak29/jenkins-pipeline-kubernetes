@@ -27,7 +27,7 @@ def helmInstall (namespace, release) {
 
     script {
         release = "${release}-${namespace}"
-        sh "helm repo add helm ${HELM_REPO}; helm repo update"
+        sh "/opt/homebrew/bin/helm repo add helm ${HELM_REPO}; helm repo update"
         sh """
             helm upgrade --install --namespace ${namespace} ${release} \
                 --set imagePullSecrets=${IMG_PULL_SECRET} \
@@ -153,7 +153,7 @@ pipeline {
                 sh "/opt/homebrew/bin/kubectl cluster-info"
 
                 // Init helm client
-                sh "helm init"
+                sh "/opt/homebrew/bin/helm init"
 
                 // Make sure parameters file exists
                 script {
