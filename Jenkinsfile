@@ -146,7 +146,7 @@ pipeline {
             steps {
                 echo "Check out acme code"
                 git branch: "master",
-                        credentialsId: 'eldada-bb',
+                        credentialsId: 'gitcred',
                         url: 'https://github.com/Olak29/jenkins-pipeline-kubernetes.git'
 
                 // Validate kubectl
