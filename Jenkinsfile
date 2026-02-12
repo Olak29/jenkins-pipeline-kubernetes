@@ -152,6 +152,7 @@ pipeline {
 
                 // Validate kubectl
                 sh "/opt/homebrew/bin/kubectl cluster-info"
+                sh "/opt/homebrew/bin/kubectl get ns "
 
                 // Init helm client
                 // sh "/opt/homebrew/bin/helm init"
