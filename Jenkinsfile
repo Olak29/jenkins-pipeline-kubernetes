@@ -112,6 +112,7 @@ pipeline {
         IMAGE_NAME = 'acme'
         TEST_LOCAL_PORT = 8817
         DEPLOY_PROD = false
+        JENKINS_HOME = /Users/kellybanjo/.jenkins
         PARAMETERS_FILE = "${JENKINS_HOME}/parameters.groovy"
     }
 
