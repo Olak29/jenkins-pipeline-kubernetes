@@ -116,7 +116,7 @@ pipeline {
         PARAMETERS_FILE = "${JENKINS_HOME}/parameters.groovy"
         DOCKER_REG = "registry.hub.docker.com/banjola"
         HELM_REPO =  "oci://registry.hub.docker.com/banjola"
-        PATH = "PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/homebrew/bin/helm:/usr/local/bin/docker:$PATH"
+        PATH = "PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/homebrew/bin/ip:/opt/homebrew/bin/helm:/usr/local/bin/docker:$PATH"
 
     }
 
@@ -156,7 +156,7 @@ pipeline {
 
                 // Validate kubectl
                 sh "/opt/homebrew/bin/kubectl cluster-info"
-                sh "/opt/homebrew/bin/kubectl get ns "
+                // sh "/opt/homebrew/bin/kubectl get ns "
 
                 // Init helm client
                 // sh "/opt/homebrew/bin/helm init"
@@ -199,7 +199,7 @@ pipeline {
                 sh "/usr/local/bin/docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
-                    host_ip = sh(returnStdout: true, script: '/sbin/ip route | awk \'/default/ { print $3 ":${TEST_LOCAL_PORT}" }\'')
+                    host_ip = sh(returnStdout: true, script: 'ip route | awk \'/default/ { print $3 ":${TEST_LOCAL_PORT}" }\'')
                 }
             }
         }
