@@ -105,9 +105,12 @@ pushHelmChart() {
 
     local chart_name=$(ls -1 ${BUILD_DIR}/helm/*.tgz 2> /dev/null)
     echo "Helm chart: ${chart_name}"
+    /opt/homebrew/bin/helm  registry login registry.hub.docker.com   -u${HELM_USR}  -p ${HELM_PSW} 
 
     [ ! -z "${chart_name}" ] || errorExit "Did not find the helm chart to deploy"
-    curl -u${HELM_USR}:${HELM_PSW} -T ${chart_name} "${HELM_REPO}/$(basename ${chart_name})" || errorExit "Uploading helm chart failed"
+    /opt/homebrew/bin/helm push ${chart_name} oci://registry.hub.docker.com/banjola/ || errorExit "Uploading helm chart failed"
+
+    # curl -u${HELM_USR}:${HELM_PSW} -T ${chart_name} "${HELM_REPO}/$(basename ${chart_name})" || errorExit "Uploading helm chart failed"
     echo
 }
 
