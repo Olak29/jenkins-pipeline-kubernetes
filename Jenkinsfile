@@ -126,13 +126,13 @@ pipeline {
         // In this example, the parameters are loaded from file ${JENKINS_HOME}/parameters.groovy later in the pipeline.
         // The ${JENKINS_HOME}/parameters.groovy can be a mounted secrets file in your Jenkins container.
 
-        string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',                   description: 'Docker registry'),
-        string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag'),
-        string (name: 'DOCKER_USR',       defaultValue: 'banjola',                                   description: 'Your helm repository user'),
-        string (name: 'DOCKER_PSW',       defaultValue: 'Golden29@',                                description: 'Your helm repository password'),
-        string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)'),
-        string (name: 'HELM_REPO',        defaultValue: 'oci://registry-1.docker.io/banjola',      description: 'Your helm repository'),
-        string (name: 'HELM_USR',         defaultValue: 'banjola',                                   description: 'Your helm repository user'),
+        string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
+        string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
+        string (name: 'DOCKER_USR',       defaultValue: 'banjola',                                   description: 'Your helm repository user')
+        string (name: 'DOCKER_PSW',       defaultValue: 'Golden29@',                                description: 'Your helm repository password')
+        string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)')
+        string (name: 'HELM_REPO',        defaultValue: 'oci://registry-1.docker.io/banjola',      description: 'Your helm repository')
+        string (name: 'HELM_USR',         defaultValue: 'banjola',                                   description: 'Your helm repository user')
         string (name: 'HELM_PSW',         defaultValue: 'Golden29@',                                description: 'Your helm repository password')    
 
     }
