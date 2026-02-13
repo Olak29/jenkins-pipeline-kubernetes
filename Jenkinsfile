@@ -185,8 +185,9 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
                 echo "Building application and Docker image"
-                sh "${WORKSPACE}/build.sh --build --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${APP_USER} --docker_psw ${APP_PWD}"
-
+                sh "${WORKSPACE}/build.sh --build --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr $APP_USER --docker_psw $APP_PWD"
+                 echo "Username: $APP_USER"
+                 echo "Password: $APP_PWD"
                 echo "Running tests"
 
                 // Kill container in case there is a leftover
@@ -200,7 +201,7 @@ pipeline {
                 }
             }
         }
-        }
+       }
 
         // Run the 3 tests on the currently running ACME Docker container
         stage('Local tests') {
@@ -226,12 +227,12 @@ pipeline {
         ////////// Step 3 //////////
         stage('Publish Docker and Helm') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'my-api-creds', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
                 echo "Stop and remove container"
                 sh "/usr/local/bin/docker stop ${ID}"
 
                 echo "Pushing ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG} image to registry"
-                sh "${WORKSPACE}/build.sh --push --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${APP_USER} --docker_psw ${APP_PWD}"
+                sh "${WORKSPACE}/build.sh --push --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr $APP_USER --docker_psw $APP_PWD"
 
                 echo "Packing helm chart"
                 sh "${WORKSPACE}/build.sh --pack_helm --push_helm --helm_repo ${HELM_REPO} --helm_usr ${APP_USER} --helm_psw ${APP_PWD}"
