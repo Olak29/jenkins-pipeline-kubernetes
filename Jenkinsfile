@@ -114,6 +114,7 @@ pipeline {
         DEPLOY_PROD = false
         JENKINS_HOME = '/Users/kellybanjo/.jenkins'
         PARAMETERS_FILE = "${JENKINS_HOME}/parameters.groovy"
+        DOCKER_REG = "registry.hub.docker.com/banjola"
     }
 
     parameters {
