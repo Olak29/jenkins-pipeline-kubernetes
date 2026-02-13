@@ -27,11 +27,10 @@ def helmInstall (namespace, release) {
 
     script {
         release = "${release}-${namespace}"
-        sh "/opt/homebrew/bin/helm repo add helm ${HELM_REPO}; helm repo update"
+        // sh "/opt/homebrew/bin/helm repo add helm ${HELM_REPO}; helm repo update"
         sh """
-            helm upgrade --install --namespace ${namespace} ${release} \
-                --set imagePullSecrets=${IMG_PULL_SECRET} \
-                --set image.repository=${DOCKER_REG}/${IMAGE_NAME},image.tag=${DOCKER_TAG} helm/acme
+             /opt/homebrew/bin/helm upgrade --install --namespace ${namespace} ${release} \
+              ${HELM_REPO}/${IMAGE_NAME}  --version ${DOCKER_TAG}
         """
         sh "sleep 5"
     }
@@ -45,7 +44,7 @@ def helmDelete (namespace, release) {
 
     script {
         release = "${release}-${namespace}"
-        sh "[ -z \"\$(helm ls --short ${release} 2>/dev/null)\" ] || helm delete --purge ${release}"
+        sh "[ -z \"\$(/opt/homebrew/bin/helm ls --short ${release} 2>/dev/null)\" ] || /opt/homebrew/bin/helm delete --purge ${release}"
     }
 }
 
@@ -116,7 +115,7 @@ pipeline {
         PARAMETERS_FILE = "${JENKINS_HOME}/parameters.groovy"
         DOCKER_REG = "registry.hub.docker.com/banjola"
         HELM_REPO =  "oci://registry.hub.docker.com/banjola"
-        PATH = "PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/homebrew/bin/ip:/opt/homebrew/bin/helm:/usr/local/bin/docker:$PATH"
+        PATH = "PATH=$HOME/bin:/usr/local/bin:/opt/homebrew/bin/ip:/opt/homebrew/bin/helm:/usr/local/bin/docker:$PATH"
 
     }
 
