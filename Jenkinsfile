@@ -183,7 +183,7 @@ pipeline {
         ////////// Step 2 //////////
         stage('Build and tests') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
+                withCredentials([usernamePassword(credentialsId: 'DOCKER_CREDS_AUTH', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
                 echo "Building application and Docker image"
                 sh "${WORKSPACE}/build.sh --build --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr $APP_USER --docker_psw $APP_PWD"
                  echo "Username: $APP_USER"
@@ -227,7 +227,7 @@ pipeline {
         ////////// Step 3 //////////
         stage('Publish Docker and Helm') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
+                withCredentials([usernamePassword(credentialsId: 'DOCKER_CREDS_AUTH', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
                 echo "Stop and remove container"
                 sh "/usr/local/bin/docker stop ${ID}"
 
