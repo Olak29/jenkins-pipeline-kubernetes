@@ -7,7 +7,7 @@
     3. Publish Docker and Helm
     4. Deploy to dev and test
     5. Deploy to staging and test
-    6. Optionally deploy to production and test
+    6. Optionally deploy to production and test 
  */
 
 /*
@@ -116,6 +116,7 @@ pipeline {
         PARAMETERS_FILE = "${JENKINS_HOME}/parameters.groovy"
         DOCKER_REG = "registry.hub.docker.com/banjola"
         HELM_REPO =  "oci://registry.hub.docker.com/banjola"
+        PATH = "PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/homebrew/bin/helm:/usr/local/bin/docker:$PATH"
 
     }
 
@@ -128,7 +129,7 @@ pipeline {
         // In this example, the parameters are loaded from file ${JENKINS_HOME}/parameters.groovy later in the pipeline.
         // The ${JENKINS_HOME}/parameters.groovy can be a mounted secrets file in your Jenkins container.
 
-        string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
+      /*  string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
         string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
         string (name: 'DOCKER_USR',       defaultValue: 'banjola',                                   description: 'Your helm repository user')
         string (name: 'DOCKER_PSW',       defaultValue: 'Golden29@',                                description: 'Your helm repository password')
@@ -136,7 +137,7 @@ pipeline {
         string (name: 'HELM_REPO',        defaultValue: 'oci://registry.hub.docker.com/banjola',      description: 'Your helm repository')
         string (name: 'HELM_USR',         defaultValue: 'banjola',                                   description: 'Your helm repository user')
         string (name: 'HELM_PSW',         defaultValue: 'Golden29@',                                description: 'Your helm repository password')    
-
+     */
     }
 
     // In this example, all is built and run from the master
@@ -192,10 +193,10 @@ pipeline {
                 echo "Running tests"
 
                 // Kill container in case there is a leftover
-                sh "[ -z \"\$(docker ps -a | grep ${ID} 2>/dev/null)\" ] || docker rm -f ${ID}"
+                sh "[ -z \"\$(/usr/local/bin/docker ps -a | grep ${ID} 2>/dev/null)\" ] || /usr/local/bin/docker rm -f ${ID}"
 
                 echo "Starting ${IMAGE_NAME} container"
-                sh "docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG}"
+                sh "/usr/local/bin/docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
                     host_ip = sh(returnStdout: true, script: '/sbin/ip route | awk \'/default/ { print $3 ":${TEST_LOCAL_PORT}" }\'')
@@ -228,7 +229,7 @@ pipeline {
         stage('Publish Docker and Helm') {
             steps {
                 echo "Stop and remove container"
-                sh "docker stop ${ID}"
+                sh "/usr/local/bin/docker stop ${ID}"
 
                 echo "Pushing ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG} image to registry"
                 sh "${WORKSPACE}/build.sh --push --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${DOCKER_USR} --docker_psw ${DOCKER_PSW}"
