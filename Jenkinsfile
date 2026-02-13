@@ -131,13 +131,9 @@ pipeline {
 
         string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
         string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
-        // string (name: 'DOCKER_USR',       defaultValue: 'banjola',                                   description: 'Your helm repository user')
-    //  string (name: 'DOCKER_PSW',       defaultValue: 'Golden29@',                                description: 'Your helm repository password')
         string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)')
         string (name: 'HELM_REPO',        defaultValue: 'oci://registry.hub.docker.com/banjola',      description: 'Your helm repository')
-        // string (name: 'HELM_USR',         defaultValue: 'banjola',                                   description: 'Your helm repository user')
-        // string (name: 'HELM_PSW',         defaultValue: 'Golden29@',                                description: 'Your helm repository password')    
-     
+        
     }
 
     // In this example, all is built and run from the master
