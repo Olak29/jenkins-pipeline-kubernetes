@@ -11,7 +11,7 @@ DOCKER_PSW=${DOCKER_PSW:-password}
 DOCKER_REPO=${DOCKER_REPO:-acme}
 DOCKER_TAG=${DOCKER_TAG:-dev}
 
-HELM_REPO=${HELM_REG:-http://artifactory.my/artifactory/helm}
+HELM_REPO=${HELM_REG:-registry.hub.docker.com/banjola}
 HELM_USR=${HELM_USR:-admin}
 HELM_PSW=${HELM_PSW:-password}
 
@@ -95,7 +95,7 @@ packHelmChart() {
     [ -d ${BUILD_DIR}/helm ] && rm -rf ${BUILD_DIR}/helm
     mkdir -p ${BUILD_DIR}/helm
 
-    helm package -d ${BUILD_DIR}/helm ${SCRIPT_DIR}/helm/acme || errorExit "Packing helm chart ${SCRIPT_DIR}/helm/acme failed"
+    /opt/homebrew/bin/helm  package -d ${BUILD_DIR}/helm ${SCRIPT_DIR}/helm/acme || errorExit "Packing helm chart ${SCRIPT_DIR}/helm/acme failed"
 }
 
 # Pushing the Helm chart
