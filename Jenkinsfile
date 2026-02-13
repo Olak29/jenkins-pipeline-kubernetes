@@ -199,7 +199,7 @@ pipeline {
                 sh "/usr/local/bin/docker run --detach --name ${ID} --rm --publish ${TEST_LOCAL_PORT}:80 ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG}"
 
                 script {
-                    host_ip = sh(returnStdout: true, script: '/opt/homebrew/bin/ip route | awk \'/127.0.01/ { print $3 ":${TEST_LOCAL_PORT}" }\'')
+                    host_ip = sh(returnStdout: true, script: '/opt/homebrew/bin/ip route | awk \'/127.0.0.1/ { print $3 ":${TEST_LOCAL_PORT}" }\'')
                 }
             }
         }
