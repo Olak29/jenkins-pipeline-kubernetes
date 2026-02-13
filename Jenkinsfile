@@ -29,8 +29,9 @@ def helmInstall (namespace, release) {
         release = "${release}-${namespace}"
         // sh "/opt/homebrew/bin/helm repo add helm ${HELM_REPO}; helm repo update"
         sh """
-             /opt/homebrew/bin/helm upgrade --install --namespace ${namespace} ${release} \
-              ${HELM_REPO}/${IMAGE_NAME}  --version ${DOCKER_TAG}
+              helm upgrade --install --namespace ${namespace} ${release} \
+                --set imagePullSecrets=${IMG_PULL_SECRET} \
+                --set image.repository=${DOCKER_REG}/${IMAGE_NAME},image.tag=${DOCKER_TAG} helm/acme
         """
         sh "sleep 5"
     }
