@@ -131,12 +131,12 @@ pipeline {
 
         string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
         string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
-        string (name: 'DOCKER_USR',       defaultValue: 'banjola',                                   description: 'Your helm repository user')
-        string (name: 'DOCKER_PSW',       defaultValue: 'Golden29@',                                description: 'Your helm repository password')
+        // string (name: 'DOCKER_USR',       defaultValue: 'banjola',                                   description: 'Your helm repository user')
+    //  string (name: 'DOCKER_PSW',       defaultValue: 'Golden29@',                                description: 'Your helm repository password')
         string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)')
         string (name: 'HELM_REPO',        defaultValue: 'oci://registry.hub.docker.com/banjola',      description: 'Your helm repository')
-        string (name: 'HELM_USR',         defaultValue: 'banjola',                                   description: 'Your helm repository user')
-        string (name: 'HELM_PSW',         defaultValue: 'Golden29@',                                description: 'Your helm repository password')    
+        // string (name: 'HELM_USR',         defaultValue: 'banjola',                                   description: 'Your helm repository user')
+        // string (name: 'HELM_PSW',         defaultValue: 'Golden29@',                                description: 'Your helm repository password')    
      
     }
 
@@ -187,8 +187,9 @@ pipeline {
         ////////// Step 2 //////////
         stage('Build and tests') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
                 echo "Building application and Docker image"
-                sh "${WORKSPACE}/build.sh --build --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${DOCKER_USR} --docker_psw ${DOCKER_PSW}"
+                sh "${WORKSPACE}/build.sh --build --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${APP_USER} --docker_psw ${APP_PWD}"
 
                 echo "Running tests"
 
@@ -202,6 +203,7 @@ pipeline {
                     host_ip = sh(returnStdout: true, script: '/opt/homebrew/bin/ip route | awk \'/default/ { print $3 ":${TEST_LOCAL_PORT}" }\'')
                 }
             }
+        }
         }
 
         // Run the 3 tests on the currently running ACME Docker container
@@ -228,15 +230,17 @@ pipeline {
         ////////// Step 3 //////////
         stage('Publish Docker and Helm') {
             steps {
+                withCredentials([usernamePassword(credentialsId: 'my-api-creds', usernameVariable: 'APP_USER', passwordVariable: 'APP_PWD')]) {
                 echo "Stop and remove container"
                 sh "/usr/local/bin/docker stop ${ID}"
 
                 echo "Pushing ${DOCKER_REG}/${IMAGE_NAME}:${DOCKER_TAG} image to registry"
-                sh "${WORKSPACE}/build.sh --push --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${DOCKER_USR} --docker_psw ${DOCKER_PSW}"
+                sh "${WORKSPACE}/build.sh --push --registry ${DOCKER_REG} --tag ${DOCKER_TAG} --docker_usr ${APP_USER} --docker_psw ${APP_PWD}"
 
                 echo "Packing helm chart"
-                sh "${WORKSPACE}/build.sh --pack_helm --push_helm --helm_repo ${HELM_REPO} --helm_usr ${HELM_USR} --helm_psw ${HELM_PSW}"
+                sh "${WORKSPACE}/build.sh --pack_helm --push_helm --helm_repo ${HELM_REPO} --helm_usr ${APP_USER} --helm_psw ${APP_PWD}"
             }
+        }
         }
 
         ////////// Step 4 //////////
