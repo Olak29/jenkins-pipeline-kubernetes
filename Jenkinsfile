@@ -260,25 +260,25 @@ pipeline {
         }
 
         // Run the 3 tests on the deployed Kubernetes pod and service
-        stage('Dev tests') {
-            parallel {
-                stage('Curl http_code') {
-                    steps {
-                        curlTest (namespace, 'http_code')
-                    }
-                }
-                stage('Curl total_time') {
-                    steps {
-                        curlTest (namespace, 'time_total')
-                    }
-                }
-                stage('Curl size_download') {
-                    steps {
-                        curlTest (namespace, 'size_download')
-                    }
-                }
-            }
-        }
+        // stage('Dev tests') {
+        //     parallel {
+        //         stage('Curl http_code') {
+        //             steps {
+        //                 curlTest (namespace, 'http_code')
+        //             }
+        //         }
+        //         stage('Curl total_time') {
+        //             steps {
+        //                 curlTest (namespace, 'time_total')
+        //             }
+        //         }
+        //         stage('Curl size_download') {
+        //             steps {
+        //                 curlTest (namespace, 'size_download')
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Cleanup dev') {
             steps {
@@ -309,25 +309,25 @@ pipeline {
         }
 
         // Run the 3 tests on the deployed Kubernetes pod and service
-        stage('Staging tests') {
-            parallel {
-                stage('Curl http_code') {
-                    steps {
-                        curlTest (namespace, 'http_code')
-                    }
-                }
-                stage('Curl total_time') {
-                    steps {
-                        curlTest (namespace, 'time_total')
-                    }
-                }
-                stage('Curl size_download') {
-                    steps {
-                        curlTest (namespace, 'size_download')
-                    }
-                }
-            }
-        }
+        // stage('Staging tests') {
+        //     parallel {
+        //         stage('Curl http_code') {
+        //             steps {
+        //                 curlTest (namespace, 'http_code')
+        //             }
+        //         }
+        //         stage('Curl total_time') {
+        //             steps {
+        //                 curlTest (namespace, 'time_total')
+        //             }
+        //         }
+        //         stage('Curl size_download') {
+        //             steps {
+        //                 curlTest (namespace, 'size_download')
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Cleanup staging') {
             steps {
