@@ -144,6 +144,7 @@ pipeline {
 
         ////////// Step 1 //////////
         stage('Git clone and setup') {
+            steps{}
             steps {
                 echo "Check out acme code"
                 git branch: "master",
