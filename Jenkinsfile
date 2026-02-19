@@ -129,10 +129,10 @@ pipeline {
         // In this example, the parameters are loaded from file ${JENKINS_HOME}/parameters.groovy later in the pipeline.
         // The ${JENKINS_HOME}/parameters.groovy can be a mounted secrets file in your Jenkins container.
 
-        string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
-        string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
-        string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)')
-        string (name: 'HELM_REPO',        defaultValue: 'oci://registry.hub.docker.com/banjola',      description: 'Your helm repository')
+        // string (name: 'DOCKER_REG',       defaultValue: 'registry.hub.docker.com/banjola',         description: 'Docker registry')
+        // string (name: 'DOCKER_TAG',       defaultValue: 'dev',                                     description: 'Docker tag')
+        // string (name: 'IMG_PULL_SECRET',  defaultValue: 'docker-reg-secret',                       description: 'The Kubernetes secret for the Docker registry (imagePullSecrets)')
+        // string (name: 'HELM_REPO',        defaultValue: 'oci://registry.hub.docker.com/banjola',      description: 'Your helm repository')
         
     }
 
